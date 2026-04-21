@@ -18,7 +18,7 @@ public class UserModel {
     @Column(unique=true)
     private String employeeEmail;
     private String employeePassword;
-    private String employeeRoele;
+    private String employeeRole;
 
     public Long getId(){
         return id;
@@ -44,12 +44,12 @@ public class UserModel {
         this.employeePassword = employeePassword;
     }
 
-    public String getEmployeeRoele() {
-        return employeeRoele;
+    public String getEmployeeRole() {
+        return employeeRole;
     }
 
-    public void setEmployeeRoele(String employeeRoele) {
-        this.employeeRoele = employeeRoele;
+    public void setEmployeeRole(String employeeRole) {
+        this.employeeRole = employeeRole;
     }
 
     
