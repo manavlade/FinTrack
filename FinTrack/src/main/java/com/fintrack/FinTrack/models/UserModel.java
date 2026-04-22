@@ -8,50 +8,48 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="employee")
+@Table(name = "employee")
 public class UserModel {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique=true)
+    @Column(unique = true)
     private String employeeEmail;
     private String employeePassword;
-    private String employeeRoele;
+    private String employeeRole;
 
-    public Long getId(){
+    public Long getId() {
         return id;
     }
 
-    public void setId(Long id){
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getEmail() {
+    public String getEmployeeEmail() {
         return employeeEmail;
     }
 
-    public void setEmail(String employeeEmail) {
+    public void setEmployeeEmail(String employeeEmail) {
         this.employeeEmail = employeeEmail;
     }
 
-    public String getPassword() {
+    public String getEmployeePassword() {
         return employeePassword;
     }
 
-    public void setPassword(String employeePassword){
+    public void setEmployeePassword(String employeePassword) {
         this.employeePassword = employeePassword;
     }
 
-    public String getEmployeeRoele() {
-        return employeeRoele;
+    public String getEmployeeRole() {
+        return employeeRole;
     }
 
-    public void setEmployeeRoele(String employeeRoele) {
-        this.employeeRoele = employeeRoele;
+    public void setEmployeeRole(String employeeRole) {
+        this.employeeRole = employeeRole;
     }
-
-    
 
 }
