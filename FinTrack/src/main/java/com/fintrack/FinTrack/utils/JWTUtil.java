@@ -35,4 +35,18 @@ public class JWTUtil {
                 .getSubject();
     }
 
+    public boolean isTokenValid(String token){
+        try {
+            Jwts.parser()
+             .verifyWith(getKey())
+             .build()
+             .parseSignedClaims(token);
+            
+             return true;
+            
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 }

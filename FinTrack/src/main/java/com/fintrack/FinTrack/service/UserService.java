@@ -20,7 +20,7 @@ public class UserService {
     }
 
     public UserModel createUser(UserModel userModel) {
-        userModel.setPassword(passwordEncoder.encode(userModel.getPassword()));
+        userModel.setEmployeePassword(passwordEncoder.encode(userModel.getEmployeePassword()));
         return userRepository.save(userModel);
     }
 
