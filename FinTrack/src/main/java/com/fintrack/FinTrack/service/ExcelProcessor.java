@@ -66,7 +66,6 @@ public class ExcelProcessor {
                 continue;
             }
 
-            // STEP 6: Convert to entity
             EmployeeUpload emp = new EmployeeUpload();
             emp.setName(parsedRow.stringValues.get("name"));
             emp.setEmail(parsedRow.stringValues.get("email"));

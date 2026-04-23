@@ -7,6 +7,5 @@ import com.fintrack.FinTrack.models.EmployeeUpload;
 
 @Repository
 public interface EmployeeeUploadRepository extends JpaRepository<EmployeeUpload, Long> {  
-
-
+        boolean existsByEmail(String email);
 } 

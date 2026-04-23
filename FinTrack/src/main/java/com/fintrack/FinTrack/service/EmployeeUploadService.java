@@ -5,19 +5,24 @@ import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fintrack.FinTrack.models.EmployeeUpload;
+import com.fintrack.FinTrack.models.UserModel;
 import com.fintrack.FinTrack.repository.EmployeeeUploadRepository;
+import com.fintrack.FinTrack.repository.UserRepository;
 
 @Service
 public class EmployeeUploadService {
 
     private final EmployeeeUploadRepository employeeUploadRepository;
+    private final UserRepository userRepository;
 
-    public EmployeeUploadService(EmployeeeUploadRepository employeeeUploadRepository) {
+    public EmployeeUploadService(EmployeeeUploadRepository employeeeUploadRepository, UserRepository userRepository) {
         this.employeeUploadRepository = employeeeUploadRepository;
+        this.userRepository = userRepository;
     }
 
     public Map<String, Object> upload(MultipartFile file) {
@@ -25,10 +30,21 @@ public class EmployeeUploadService {
         try (InputStream is = file.getInputStream();
                 Workbook workbook = WorkbookFactory.create(is)) {
 
+            String email = SecurityContextHolder.getContext()
+                    .getAuthentication()
+                    .getName();
+            UserModel user = userRepository.findByEmployeeEmail(email)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+
             ExcelProcessor.ProcessResult result = ExcelProcessor.process(file, workbook);
 
-            // SAVE VALID DATA (INSERT/UPDATE LOGIC)
             for (EmployeeUpload emp : result.validEmployees) {
+                if (employeeUploadRepository.existsByEmail(emp.getEmail())) {
+                    result.errors.add("Email already exists: " + emp.getEmail());
+                    continue; // skip saving
+                }
+
+                emp.setUploadedBy(user);
                 employeeUploadRepository.save(emp);
             }
 
@@ -40,7 +56,7 @@ public class EmployeeUploadService {
                     "warnings", result.warnings);
 
         } catch (Exception e) {
-            throw new RuntimeException("Failed to process Excel file: " + e.getMessage(), e);
+            throw new RuntimeException("Failed to process Excel file {}" + e.getMessage(), e);
         }
     }
 
