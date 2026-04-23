@@ -1,3 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import 'tailwindcss';
+
+@theme {
+  --color-brand-primary: #a98b76;
+  --color-brand-secondary: #bfa28c;
+  --color-brand-bg: #f3e4c9;
+  --color-brand-success: #babf94;
+}
+
+html, body {
+  @apply antialiased min-h-screen text-gray-900 bg-brand-bg;
+}
