@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "fintrack-ui": {
+    "FinTrack-UI": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -64,10 +64,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "fintrack-ui:build:production"
+              "buildTarget": "FinTrack-UI:build:production"
             },
             "development": {
-              "buildTarget": "fintrack-ui:build:development"
+              "buildTarget": "FinTrack-UI:build:development"
             }
           },
           "defaultConfiguration": "development"
