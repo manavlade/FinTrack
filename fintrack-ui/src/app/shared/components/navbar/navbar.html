@@ -1,0 +1,57 @@
+<div class="flex items-center gap-4">
+
+  @if (!isLoggedIn) {
+
+    <a 
+      routerLink="/login"
+      class="text-sm font-medium hover:text-blue-600"
+    >
+      Login
+    </a>
+
+    <a 
+      routerLink="/signup"
+      class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm"
+    >
+      Sign Up
+    </a>
+
+  } @else {
+
+    <!-- User Dropdown -->
+    <div class="relative">
+
+      <!-- User Icon Button -->
+      <button 
+        (click)="toggleDropdown()"
+        class="flex items-center gap-2 hover:text-blue-600"
+      >
+        <i lucide="user"></i>
+      </button>
+
+      <!-- Dropdown Menu -->
+      @if (isDropdownOpen) {
+        <div class="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded z-50">
+
+          <!-- Optional: User Info -->
+          <div class="px-4 py-2 text-sm text-gray-500 border-b">
+            Logged in
+          </div>
+
+          <!-- Logout -->
+          <button 
+            (click)="logout()"
+            class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2"
+          >
+            <i lucide="log-out"></i>
+            Logout
+          </button>
+
+        </div>
+      }
+
+    </div>
+
+  }
+
+</div>
