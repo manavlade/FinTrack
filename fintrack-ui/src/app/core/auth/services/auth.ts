@@ -10,15 +10,28 @@ import { Router } from '@angular/router';
 })
 export class Auth {
 
-  private apiUrl = `${environment.apiUrl}/auth`;
+  private readonly apiUrl = `${environment.apiUrl}/auth`;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(
+    private readonly http: HttpClient,
+    private readonly router: Router
+  ) { }
 
   login(credentials: AuthRequest) {
-    return this.http.post<AuthResponse>(this.apiUrl, credentials).pipe(
-      tap(response => this.setToken(response.token))
-    )
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials)
+      .pipe(
+        tap(response => this.setToken(response.token))
+      );
   }
+
+
+   signUp(credentials: AuthRequest) {
+    return this.http.post<any>(`${this.apiUrl}/signup`, credentials)
+      .pipe(
+        tap(() => this.router.navigate(['/login']))
+      );
+  }
+
 
   logout() {
     localStorage.removeItem('token');

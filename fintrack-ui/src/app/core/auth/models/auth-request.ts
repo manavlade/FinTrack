@@ -7,3 +7,9 @@ export interface AuthRequest {
 export interface AuthResponse {
     token: string;
 }
+
+export interface SignUpRequest {
+    email: string;
+    password: string;
+    role: string;
+}

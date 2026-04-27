@@ -23,11 +23,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("")
-    public UserModel createUser(@RequestBody UserModel userModel) {
-        return userService.createUser(userModel);
-    }
-
     @GetMapping("/getAllEmployee")
     public List<UserModel> getAllEmployee() {
         return userService.getAllUsers();
