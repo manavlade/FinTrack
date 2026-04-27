@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.fintrack.FinTrack.exception.EmailAlreadyExistsException;
 import com.fintrack.FinTrack.models.UserModel;
 import com.fintrack.FinTrack.repository.UserRepository;
 
@@ -20,7 +21,14 @@ public class UserService {
     }
 
     public UserModel createUser(UserModel userModel) {
-        userModel.setEmployeePassword(passwordEncoder.encode(userModel.getEmployeePassword()));
+
+        if (userRepository.existsByEmployeeEmail(userModel.getEmployeeEmail())) {
+            throw new EmailAlreadyExistsException("Email Already exists");
+        }
+
+        userModel.setEmployeePassword(
+                passwordEncoder.encode(userModel.getEmployeePassword()));
+
         return userRepository.save(userModel);
     }
 
