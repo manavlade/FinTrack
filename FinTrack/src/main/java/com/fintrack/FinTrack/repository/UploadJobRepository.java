@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.fintrack.FinTrack.models.UploadJob;
+import com.fintrack.FinTrack.models.UploadStatus;
 
 public interface UploadJobRepository extends JpaRepository<UploadJob, Long> {
 
@@ -15,7 +16,7 @@ public interface UploadJobRepository extends JpaRepository<UploadJob, Long> {
 
     Page<UploadJob> findAll(Pageable pageable);
 
-    Page<UploadJob> findByStatus(String status, Pageable pageable);
+    Page<UploadJob> findByStatus(UploadStatus status, Pageable pageable);
 
     Page<UploadJob> findByUploadedAtBetween(
             LocalDateTime start,
@@ -23,7 +24,7 @@ public interface UploadJobRepository extends JpaRepository<UploadJob, Long> {
             Pageable pageable);
 
     Page<UploadJob> findByStatusAndUploadedAtBetween(
-            String status,
+            UploadStatus status,
             LocalDateTime start,
             LocalDateTime end,
             Pageable pageable

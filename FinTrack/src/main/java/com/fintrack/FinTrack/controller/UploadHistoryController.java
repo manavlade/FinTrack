@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fintrack.FinTrack.models.UploadJob;
+import com.fintrack.FinTrack.models.UploadStatus;
 import com.fintrack.FinTrack.repository.UploadJobRepository;
 
 @RestController
@@ -23,9 +24,9 @@ public class UploadHistoryController {
         this.uploadJobRepository = uploadJobRepository;
     }
 
-    @GetMapping("/history")
+    @GetMapping("upload/analytics")
     public Page<UploadJob> getHistory(
-            @RequestParam(required = false) String status,
+            @RequestParam(required = false) UploadStatus status,
             @RequestParam(required = false) LocalDateTime from,
             @RequestParam(required = false) LocalDateTime to,
             Pageable pageable) {
