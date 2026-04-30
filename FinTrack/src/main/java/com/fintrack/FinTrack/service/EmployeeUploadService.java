@@ -1,19 +1,19 @@
 package com.fintrack.FinTrack.service;
 
 import java.io.InputStream;
-import java.security.Security;
 import java.time.LocalDateTime;
 import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.springframework.security.core.context.SecurityContext;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fintrack.FinTrack.models.EmployeeUpload;
 import com.fintrack.FinTrack.models.UploadJob;
+import com.fintrack.FinTrack.models.UploadStatus;
 import com.fintrack.FinTrack.models.UserModel;
 import com.fintrack.FinTrack.repository.EmployeeeUploadRepository;
 import com.fintrack.FinTrack.repository.UploadJobRepository;
@@ -26,12 +26,18 @@ public class EmployeeUploadService {
     private final UserRepository userRepository;
     private final UploadJobRepository uploadJobRepository;
 
-    public EmployeeUploadService(EmployeeeUploadRepository employeeeUploadRepository, UserRepository userRepository, UploadJobRepository uploadJobRepository) {
+    public EmployeeUploadService(EmployeeeUploadRepository employeeeUploadRepository, UserRepository userRepository,
+            UploadJobRepository uploadJobRepository) {
         this.employeeUploadRepository = employeeeUploadRepository;
         this.userRepository = userRepository;
         this.uploadJobRepository = uploadJobRepository;
     }
 
+    @CacheEvict(value = {
+            "analytics:summary",
+            "analytics:trend",
+            "analytics:user-stats"
+    }, allEntries = true)
     public Map<String, Object> upload(MultipartFile file) {
 
         try (InputStream is = file.getInputStream();
@@ -39,7 +45,6 @@ public class EmployeeUploadService {
 
             ExcelProcessor.ProcessResult result = ExcelProcessor.process(file, workbook);
 
-            // SAVE VALID DATA (INSERT/UPDATE LOGIC)
             for (EmployeeUpload emp : result.validEmployees) {
                 employeeUploadRepository.save(emp);
             }
@@ -52,13 +57,12 @@ public class EmployeeUploadService {
             UploadJob job = new UploadJob();
 
             job.setFilename(file.getOriginalFilename());
-            job.setFilename(file.getOriginalFilename());
             job.setUploadedAt(LocalDateTime.now());
             job.setUploadedBy(user);
             job.setTotalRows(result.validEmployees.size() + result.errors.size());
             job.setValidRows(result.validEmployees.size());
             job.setInvalidRows(result.errors.size());
-            job.setStatus(result.errors.isEmpty() ? "SUCCESS" : "PARTIAL");
+            job.setStatus(result.errors.isEmpty() ? UploadStatus.SUCCESS : UploadStatus.FAILED);
 
             uploadJobRepository.save(job);
 

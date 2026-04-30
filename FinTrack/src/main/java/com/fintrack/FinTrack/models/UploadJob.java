@@ -1,9 +1,29 @@
 package com.fintrack.FinTrack.models;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
 @Entity
+@Table(
+    name = "upload_job",
+    indexes = {
+        @Index(name = "idx_upload_job_status", columnList = "status"),
+        @Index(name = "idx_upload_job_uploaded_at", columnList = "uploadedAt"),
+        @Index(name = "idx_upload_job_user_id", columnList = "user_id"),
+        @Index(name = "idx_status_uploaded_at", columnList = "status, uploadedAt")
+    }
+)
 public class UploadJob {
 
     @Id
@@ -14,7 +34,8 @@ public class UploadJob {
 
     private LocalDateTime uploadedAt;
 
-    private String status; 
+    @Enumerated(EnumType.STRING)
+    private UploadStatus status; 
 
     private int totalRows;
     private int validRows;
@@ -43,7 +64,6 @@ public class UploadJob {
         this.id = id;
     }
 
-
     public int getInvalidRows() {
         return invalidRows;
     }
@@ -52,11 +72,11 @@ public class UploadJob {
         this.invalidRows = invalidRows;
     }
 
-    public String getStatus() {
+    public UploadStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(UploadStatus status) {
         this.status = status;
     }
 
