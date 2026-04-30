@@ -22,7 +22,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         UserModel user = userRepository.findByEmployeeEmail(email).orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
 
-        return User.builder().username(user.getEmployeeEmail()).password(user.getEmployeePassword()).roles(user.getEmployeeRole()).build();
+        return User.builder().username(user.getEmployeeEmail()).password(user.getEmployeePassword()).authorities("ROLE_" + user.getEmployeeRole().name()).build();
     }
 
 }

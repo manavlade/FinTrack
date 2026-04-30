@@ -1,9 +1,11 @@
 package com.fintrack.FinTrack.DTO;
 
+import com.fintrack.FinTrack.models.enums.Role;
+
 public class SignUpResponse {
     private Long id;
     private String employeeEmail;
-    private String employeeRole;
+    private Role employeeRole;
 
     public Long getId() {
         return id;
@@ -21,11 +23,11 @@ public class SignUpResponse {
         this.employeeEmail = employeeEmail;
     }
 
-    public String getEmployeeRole() {
+    public Role getEmployeeRole() {
         return employeeRole;
     }
 
-    public void setEmployeeRole(String employeeRole) {
+    public void setEmployeeRole(Role employeeRole) {
         this.employeeRole = employeeRole;
     }
 

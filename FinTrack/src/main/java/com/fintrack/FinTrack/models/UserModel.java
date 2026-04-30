@@ -1,7 +1,11 @@
 package com.fintrack.FinTrack.models;
 
+import com.fintrack.FinTrack.models.enums.Role;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,7 +22,9 @@ public class UserModel {
     @Column(unique = true)
     private String employeeEmail;
     private String employeePassword;
-    private String employeeRole;
+
+    @Enumerated(EnumType.STRING)
+    private Role employeeRole;
 
     public Long getId() {
         return id;
@@ -44,11 +50,11 @@ public class UserModel {
         this.employeePassword = employeePassword;
     }
 
-    public String getEmployeeRole() {
+    public Role getEmployeeRole() {
         return employeeRole;
     }
 
-    public void setEmployeeRole(String employeeRole) {
+    public void setEmployeeRole(Role employeeRole) {
         this.employeeRole = employeeRole;
     }
 

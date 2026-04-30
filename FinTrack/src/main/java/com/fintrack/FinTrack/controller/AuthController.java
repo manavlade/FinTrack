@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fintrack.FinTrack.DTO.LoginRequest;
 import com.fintrack.FinTrack.DTO.AuthResponse;
+import com.fintrack.FinTrack.DTO.LoginRequest;
 import com.fintrack.FinTrack.DTO.SignUpRequest;
 import com.fintrack.FinTrack.DTO.SignUpResponse;
 import com.fintrack.FinTrack.models.UserModel;
@@ -18,6 +18,7 @@ import com.fintrack.FinTrack.service.UserService;
 import com.fintrack.FinTrack.utils.JWTUtil;
 
 import jakarta.validation.Valid;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/auth")
@@ -36,17 +37,22 @@ public class AuthController {
     @PostMapping("/login")
     public AuthResponse login(@Validated @RequestBody LoginRequest authRequest) {
 
-         authenticationManager.authenticate(
+        authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authRequest.getEmployeeEmail(),
                         authRequest.getEmployeePassword()));
 
-        String token = jwtUtil.generateToken(authRequest.getEmployeeEmail());
+        UserModel userModel = userService.getUserByEmail(authRequest.getEmployeeEmail());
+
+        String token = jwtUtil.generateToken(
+                userModel.getEmployeeEmail(),
+                userModel.getId(),
+                userModel.getEmployeeRole());
 
         return new AuthResponse(token);
-    }   
-    
-     @PostMapping("/signup")
+    }
+
+    @PostMapping("/signup")
     public SignUpResponse signup(@Valid @RequestBody SignUpRequest request) {
 
         UserModel user = new UserModel();

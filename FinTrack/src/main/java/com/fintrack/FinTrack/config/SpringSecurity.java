@@ -18,12 +18,11 @@ import com.fintrack.FinTrack.utils.JWTUtil;
 @Configuration
 @EnableWebSecurity
 public class SpringSecurity {
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
@@ -41,9 +40,11 @@ public class SpringSecurity {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**",    "/v3/api-docs/**",
-                "/swagger-ui/**",
-                "/swagger-ui.html").permitAll()
+                        .requestMatchers("/auth/**", "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html")
+                        .permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 

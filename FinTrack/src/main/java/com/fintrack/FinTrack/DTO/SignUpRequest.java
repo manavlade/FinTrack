@@ -1,10 +1,14 @@
 package com.fintrack.FinTrack.DTO;
 
+import com.fintrack.FinTrack.models.enums.Role;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class SignUpRequest {
+
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid Email format")
     private String employeeEmail;
@@ -13,8 +17,9 @@ public class SignUpRequest {
     @Size(min = 8, message = "Password must be at least 8 characters")
     private String employeePassword;
 
-    @NotBlank(message="Role is required")
-    private String employeeRole;
+
+    @NotNull(message="Role is required")
+    private Role employeeRole;
 
     public String getEmployeeEmail() {
         return employeeEmail;
@@ -32,11 +37,11 @@ public class SignUpRequest {
         this.employeePassword = employeePassword;
     }
 
-    public String getEmployeeRole() {
+    public Role getEmployeeRole() {
         return employeeRole;
     }
 
-    public void setEmployeeRole(String employeeRole) {
+    public void setEmployeeRole(Role employeeRole) {
         this.employeeRole = employeeRole;
     }
 }

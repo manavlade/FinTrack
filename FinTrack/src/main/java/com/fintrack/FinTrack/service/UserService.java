@@ -44,4 +44,9 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    public UserModel getUserByEmail(String email) {
+        return userRepository.findByEmployeeEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
 }
