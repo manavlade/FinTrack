@@ -2,7 +2,6 @@ package com.fintrack.FinTrack.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fintrack.FinTrack.DTO.AnalyticsSummary;
+import com.fintrack.FinTrack.DTO.TrendKey;
+import com.fintrack.FinTrack.DTO.UploadTrendPoint;
+import com.fintrack.FinTrack.DTO.UserUploadStats;
 import com.fintrack.FinTrack.service.AnalyticsService;
 
 @RestController
@@ -31,20 +33,20 @@ public class AnalyticsController {
     }
 
     @GetMapping("/upload-trend")
-     public List<Map<String, Object>> getTrend(
+     public List<UploadTrendPoint> getTrend(
             @RequestParam(required = false) LocalDateTime from,
             @RequestParam(required = false) LocalDateTime to
     ) {
-        return service.getTrend(from, to);
+        return service.getTrend(new TrendKey(from, to));
     }
-
+    
 
     @GetMapping("/user-stats")
-     public List<Map<String, Object>> getUserStats(
+     public List<UserUploadStats> getUserStats(
             @RequestParam(required = false) LocalDateTime from,
             @RequestParam(required = false) LocalDateTime to
     ) {
-        return service.getUserStats(from, to);
+        return service.getUserStats(new TrendKey(from, to));
     }
 
     @GetMapping("/success-rate")

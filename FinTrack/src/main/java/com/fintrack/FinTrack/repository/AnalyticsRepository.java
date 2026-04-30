@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.fintrack.FinTrack.models.UploadJob;
 
-import io.lettuce.core.dynamic.annotation.Param;
+import org.springframework.data.repository.query.Param;
 
 public interface AnalyticsRepository extends JpaRepository<UploadJob, Long> {
 
