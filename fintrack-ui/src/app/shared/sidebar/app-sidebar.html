@@ -1,0 +1,41 @@
+<div hlmSidebarWrapper>
+    <hlm-sidebar>
+
+        <div hlmSidebarHeader>
+            <h2 class="px-3 py-2 font-semibold">
+                Analytics
+            </h2>
+        </div>
+
+        <div hlmSidebarContent>
+
+            <div hlmSidebarGroup>
+                <div hlmSidebarGroupContent>
+                    <ul hlmSidebarMenu>
+
+                        @for (item of _items; track item.title) {
+                        <li hlmSidebarMenuItem>
+                            <a hlmSidebarMenuButton [routerLink]="item.url" routerLinkActive="isActive"
+                                [routerLinkActiveOptions]="{ exact: true }">
+                                <span>{{ item.title }}</span>
+                            </a>
+                        </li>
+                        }
+
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div hlmSidebarFooter>
+            <small class="px-3 text-xs opacity-60">
+                v1.0
+            </small>
+        </div>
+
+    </hlm-sidebar>
+
+    <ng-content />
+</div>

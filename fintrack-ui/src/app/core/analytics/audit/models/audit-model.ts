@@ -1,9 +1,9 @@
-export interface AuditModel {
-    id: number;
-    filename: string;
+export interface UploadHistory{
+    fileName: string;
     uploadedAt: string;
-    status: 'SUCCESS' | 'PARTIAL' | 'FAILED';
+    status: string;
     totalRows: number;
     validRows: number;
-    invalidRows: number;
+    InvalidRows: number;
+    processingNotes: string;
 }

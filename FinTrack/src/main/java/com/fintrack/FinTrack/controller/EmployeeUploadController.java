@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fintrack.FinTrack.models.UploadJob;
-import com.fintrack.FinTrack.models.UserModel;
 import com.fintrack.FinTrack.repository.EmployeeeUploadRepository;
 import com.fintrack.FinTrack.repository.UploadJobRepository;
 import com.fintrack.FinTrack.repository.UserRepository;
@@ -49,15 +48,12 @@ public class EmployeeUploadController {
     @GetMapping("/upload/history")
     public List<UploadJob> getUploadHistory() {
 
-        String email = SecurityContextHolder.getContext()
+        Long userId = (Long) SecurityContextHolder.getContext()
                 .getAuthentication()
-                .getName();
-
-        UserModel user = userRepository.findByEmployeeEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .getPrincipal();
 
         return uploadJobRepository
-                .findByUploadedByIdOrderByUploadedAtDesc(user.getId());
+                .findByUploadedByIdOrderByUploadedAtDesc(userId);
     }
 
 }
