@@ -1,57 +1,41 @@
-<div class="flex items-center gap-4">
+<nav
+  class="bg-gradient-to-r from-purple-500 via-violet-500 to-indigo-500 px-6 py-3 flex items-center justify-between shadow-md">
 
-  @if (!isLoggedIn) {
+  <div class="text-xl font-bold text-white tracking-wide">
+    FinTrack
+  </div>
 
-    <a 
-      routerLink="/login"
-      class="text-sm font-medium hover:text-blue-600"
-    >
+  <ul class="hidden md:flex gap-6 font-medium text-white/90">
+    <li><a routerLink="/home" class="hover:text-yellow-300 transition">Home</a></li>
+    <li><a routerLink="/about" class="hover:text-yellow-300 transition">About</a></li>
+    <li><a routerLink="/contact" class="hover:text-yellow-300 transition">Contact</a></li>
+    <li><a routerLink="/upload" class="hover:text-yellow-300 transition">Upload</a></li>
+    <li><a routerLink="/analytics" class="hover:text-yellow-300 transition">Analytics</a></li>
+  </ul>
+
+  <div class="flex items-center gap-3">
+
+    @if (auth.isAuthenticated()) {
+
+    <!-- Logged in user icon -->
+    <lucide-icon [img]="user" class="text-white w-6 h-6 cursor-pointer hover:text-yellow-300 transition">
+    </lucide-icon>
+
+    } @else {
+
+    <!-- Login / Signup -->
+    <button routerLink="/login"
+      class="bg-white/10 backdrop-blur-md text-white px-4 py-1.5 rounded-lg border border-white/20 hover:bg-white/20 transition">
       Login
-    </a>
+    </button>
 
-    <a 
-      routerLink="/signup"
-      class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm"
-    >
+    <button routerLink="/signup"
+      class="bg-gradient-to-r from-yellow-400 to-orange-400 text-black font-semibold px-4 py-1.5 rounded-lg shadow hover:scale-105 transition">
       Sign Up
-    </a>
+    </button>
 
-  } @else {
+    }
 
-    <!-- User Dropdown -->
-    <div class="relative">
+  </div>
 
-      <!-- User Icon Button -->
-      <button 
-        (click)="toggleDropdown()"
-        class="flex items-center gap-2 hover:text-blue-600"
-      >
-        <i lucide="user"></i>
-      </button>
-
-      <!-- Dropdown Menu -->
-      @if (isDropdownOpen) {
-        <div class="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded z-50">
-
-          <!-- Optional: User Info -->
-          <div class="px-4 py-2 text-sm text-gray-500 border-b">
-            Logged in
-          </div>
-
-          <!-- Logout -->
-          <button 
-            (click)="logout()"
-            class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2"
-          >
-            <i lucide="log-out"></i>
-            Logout
-          </button>
-
-        </div>
-      }
-
-    </div>
-
-  }
-
-</div>
+</nav>

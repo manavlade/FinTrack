@@ -1,0 +1,29 @@
+<div class="p-6 max-w-lg mx-auto bg-white shadow rounded-lg">
+
+    <h2 class="text-xl font-bold mb-4">Upload Excel File</h2>
+
+    <input type="file" (change)="onFileSelected($event)" accept=".xlsx,.xls"
+        class="mb-3 block w-full border p-2 rounded" />
+
+    <!-- Error -->
+    <p *ngIf="errorMessage" class="text-red-500 mb-2">
+        {{ errorMessage }}
+    </p>
+
+
+    <!-- Upload Button -->
+    <button (click)="uploadFile()" [disabled]="loading()"
+        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50">
+        {{ loading() ? 'Uploading...' : 'Upload' }}
+    </button>
+
+    <!-- Response -->
+    <div *ngIf="response" class="mt-4 p-3 bg-green-50 border rounded">
+
+        <p><strong>Message:</strong> {{ response.message }}</p>
+        <p><strong>Success:</strong> {{ response.successCount }}</p>
+        <p><strong>Errors:</strong> {{ response.errorCount }}</p>
+
+    </div>
+
+</div>

@@ -36,6 +36,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = null;
         String email = null;
         String role = null;
+        Long userId = null;
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
@@ -46,12 +47,13 @@ public class JwtFilter extends OncePerRequestFilter {
             }
             email = jJwtUtil.extractEmail(token);
             role = jJwtUtil.extractRole(token).toUpperCase();
+            userId = jJwtUtil.extractId(token);
         }
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                    email,
+                    userId,
                     null,
                     List.of(new SimpleGrantedAuthority("ROLE_" + role)));
 
