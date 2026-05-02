@@ -1,28 +1,19 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { Auth } from '../../../core/auth/services/auth';
+import { User, LucideAngularModule } from "lucide-angular"
 
 @Component({
   selector: 'app-navbar',
-  imports: [],
+  standalone: true,
+  imports: [RouterModule, LucideAngularModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
 export class Navbar {
 
-  constructor(public authService: Auth) { }
+  constructor (public auth: Auth) {}
 
-  isDropdownOpen = false;
-
-  get isLoggedIn(): boolean {
-    return this.authService.isAuthenticated();
-  }
-
-  toggleDropdown() {
-    this.isDropdownOpen = !this.isDropdownOpen;
-  }
-
-  logout() {
-    this.authService.logout();
-  }
+  readonly user = User;
 
 }

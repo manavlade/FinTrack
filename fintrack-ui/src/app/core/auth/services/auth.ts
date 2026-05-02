@@ -20,10 +20,12 @@ export class Auth {
   login(credentials: AuthRequest) {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials)
       .pipe(
-        tap(response => this.setToken(response.token))
+        tap(response => {
+          this.setToken(response.token);
+          this.router.navigate(['/'])
+        })
       );
   }
-
 
    signUp(credentials: AuthRequest) {
     return this.http.post<any>(`${this.apiUrl}/signup`, credentials)

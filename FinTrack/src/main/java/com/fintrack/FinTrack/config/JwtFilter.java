@@ -1,10 +1,11 @@
 package com.fintrack.FinTrack.config;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -34,6 +35,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String token = null;
         String email = null;
+        String role = null;
+        Long userId = null;
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
@@ -43,21 +46,22 @@ public class JwtFilter extends OncePerRequestFilter {
                 return;
             }
             email = jJwtUtil.extractEmail(token);
+            role = jJwtUtil.extractRole(token).toUpperCase();
+            userId = jJwtUtil.extractId(token);
         }
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
 
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                    userDetails,
+                    userId,
                     null,
-                    userDetails.getAuthorities());
+                    List.of(new SimpleGrantedAuthority("ROLE_" + role)));
+
             authToken.setDetails(
                     new WebAuthenticationDetailsSource().buildDetails(request));
 
             SecurityContextHolder.getContext().setAuthentication(authToken);
         }
         filterChain.doFilter(request, response);
-
     }
 }
