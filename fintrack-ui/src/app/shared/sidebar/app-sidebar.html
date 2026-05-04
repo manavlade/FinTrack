@@ -1,41 +1,61 @@
 <div hlmSidebarWrapper>
-    <hlm-sidebar>
+  <hlm-sidebar class="bg-white border-r shadow-sm">
+    
+    <div hlmSidebarHeader class="px-4 py-4 border-b">
+      <h2 class="text-lg font-bold tracking-tight flex items-center gap-2">
+        <lucide-icon [img]="layoutDashboard" class="w-5 h-5 text-primary"></lucide-icon>
+        Analytics
+      </h2>
+      <p class="text-xs text-gray-500">
+        Dashboard & insights
+      </p>
+    </div>
 
-        <div hlmSidebarHeader>
-            <h2 class="px-3 py-2 font-semibold">
-                Analytics
-            </h2>
+    <!-- CONTENT -->
+    <div hlmSidebarContent class="px-2 py-4">
+      <div hlmSidebarGroup>
+        <div hlmSidebarGroupContent>
+          <ul hlmSidebarMenu class="space-y-1">
+            @for (item of _items; track item.title) {
+              <li hlmSidebarMenuItem>
+                <a
+                  hlmSidebarMenuButton
+                  [routerLink]="item.url"
+                  routerLinkActive="bg-slate-100 text-primary"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  class="flex items-center gap-3 px-3 py-2 rounded-md transition-all">
+
+                  <!-- ICON -->
+                  <lucide-icon
+                    [img]="
+                      item.title === 'Upload History' ? history :
+                      item.title === 'Upload' ? upload :
+                      item.title === 'Upload Analytics' ? uploadAnalytics :
+                      item.title === 'Reports' ? reports :
+                      user
+                    "
+                    class="w-4 h-4 opacity-70"
+                  ></lucide-icon>
+
+                  <!-- TEXT -->
+                  <span class="text-sm font-medium">
+                    {{ item.title }}
+                  </span>
+                </a>
+              </li>
+            }
+          </ul>
         </div>
+      </div>
+    </div>
 
-        <div hlmSidebarContent>
+    <!-- FOOTER -->
+    <div hlmSidebarFooter class="px-4 py-3 border-t flex justify-between items-center">
+      <small class="text-xs text-gray-400">v1.0</small>
+      <span class="text-xs text-gray-400 font-semibold">FinTrack</span>
+    </div>
 
-            <div hlmSidebarGroup>
-                <div hlmSidebarGroupContent>
-                    <ul hlmSidebarMenu>
+  </hlm-sidebar>
 
-                        @for (item of _items; track item.title) {
-                        <li hlmSidebarMenuItem>
-                            <a hlmSidebarMenuButton [routerLink]="item.url" routerLinkActive="isActive"
-                                [routerLinkActiveOptions]="{ exact: true }">
-                                <span>{{ item.title }}</span>
-                            </a>
-                        </li>
-                        }
-
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- FOOTER -->
-        <div hlmSidebarFooter>
-            <small class="px-3 text-xs opacity-60">
-                v1.0
-            </small>
-        </div>
-
-    </hlm-sidebar>
-
-    <ng-content />
+  <ng-content />
 </div>

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HlmSidebarImports } from '@spartan-ng/helm/sidebar';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { BarChart, CloudUpload, FileText, History, LayoutDashboard, LucideAngularModule, User } from 'lucide-angular';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,10 +10,19 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     HlmSidebarImports,
     RouterLink,
     RouterLinkActive,
+    LucideAngularModule
   ],
   templateUrl: './app-sidebar.html',
 })
 export class AppSidebar {
+
+  user = User;
+  layoutDashboard = LayoutDashboard;
+  history = History;
+  upload = CloudUpload;
+  uploadAnalytics = BarChart;
+  reports = FileText;
+
 
   protected readonly _items = [
     {
@@ -21,11 +31,15 @@ export class AppSidebar {
     },
     {
       title: 'Upload',
-      url: 'upload'
+      url: '/upload'
     },
     {
-      title: 'Reports',
-      url: 'reports',
+      title: 'Upload Analytics',
+      url: 'upload/analytics'
+    },
+    {
+      title: 'Admin Analytics',
+      url: 'upload/admin/analytics',
     },
     {
       title: 'Profile',

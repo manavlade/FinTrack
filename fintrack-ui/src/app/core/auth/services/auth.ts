@@ -27,13 +27,12 @@ export class Auth {
       );
   }
 
-   signUp(credentials: AuthRequest) {
+  signUp(credentials: AuthRequest) {
     return this.http.post<any>(`${this.apiUrl}/signup`, credentials)
       .pipe(
         tap(() => this.router.navigate(['/login']))
       );
   }
-
 
   logout() {
     localStorage.removeItem('token');
@@ -51,4 +50,9 @@ export class Auth {
   setToken(token: string) {
     localStorage.setItem('token', token);
   }
+
+  getUserRole(token: string) {
+    return localStorage.getItem('role') || "";
+  }
+
 }

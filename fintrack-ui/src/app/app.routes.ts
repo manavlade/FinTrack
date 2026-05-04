@@ -39,6 +39,18 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import("./features/analytics/analyticslayout/upload-history/upload-history")
                         .then(m => m.UploadHistory)
+            },
+            {
+                path: 'upload/analytics',
+                loadComponent: () =>
+                    import("./features/analytics/analyticslayout/uploadanalytics/uploadanalytics")
+                        .then(m => m.Uploadanalytics)
+            },
+            {
+                path: 'upload/admin/analytics',
+                loadComponent: () => 
+                    import("./features/analytics/analyticslayout/admin-analytics/admin-analytics")
+                    .then(m => m.AdminAnalytics)
             }
         ],
         canActivate: [authGuard]
