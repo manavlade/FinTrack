@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { HlmSidebarImports } from '@spartan-ng/helm/sidebar';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { BarChart, CloudUpload, FileText, History, LayoutDashboard, LucideAngularModule, User } from 'lucide-angular';
+import { Auth } from '../../core/auth/services/auth';
 
 @Component({
   selector: 'app-sidebar',
@@ -15,6 +16,8 @@ import { BarChart, CloudUpload, FileText, History, LayoutDashboard, LucideAngula
   templateUrl: './app-sidebar.html',
 })
 export class AppSidebar {
+
+  public readonly authService = inject(Auth)
 
   user = User;
   layoutDashboard = LayoutDashboard;
@@ -40,6 +43,7 @@ export class AppSidebar {
     {
       title: 'Admin Analytics',
       url: 'upload/admin/analytics',
+      role: 'ADMIN'
     },
     {
       title: 'Profile',

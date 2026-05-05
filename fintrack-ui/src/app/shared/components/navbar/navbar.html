@@ -17,23 +17,34 @@
 
     @if (auth.isAuthenticated()) {
 
-    <!-- Logged in user icon -->
-    <lucide-icon [img]="user" class="text-white w-6 h-6 cursor-pointer hover:text-yellow-300 transition">
-    </lucide-icon>
+    <button [hlmDropdownMenuTrigger]="menu" class="text-white hover:text-yellow-300 transition flex items-center">
+      <lucide-icon [img]="user" class="w-6 h-6"></lucide-icon>
+    </button>
 
-    } @else {
+    <ng-template #menu>
+      <hlm-dropdown-menu>
 
-    <!-- Login / Signup -->
+        <hlm-dropdown-menu-label>
+          My Account
+        </hlm-dropdown-menu-label>
+
+        <hlm-dropdown-menu-separator />
+
+        <button hlmDropdownMenuItem (click)="auth.logout()" class="text-red-500 hover:text-red-600">
+          Logout
+        </button>
+
+      </hlm-dropdown-menu>
+    </ng-template>
+
+    }
+    @else {
     <button routerLink="/login"
       class="bg-white/10 backdrop-blur-md text-white px-4 py-1.5 rounded-lg border border-white/20 hover:bg-white/20 transition">
-      Login
-    </button>
-
-    <button routerLink="/signup"
+      Login </button>
+    <button routerLink="/sign-up"
       class="bg-gradient-to-r from-yellow-400 to-orange-400 text-black font-semibold px-4 py-1.5 rounded-lg shadow hover:scale-105 transition">
-      Sign Up
-    </button>
-
+      Sign Up </button>
     }
 
   </div>

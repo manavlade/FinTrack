@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { authGuard } from './core/auth/guards/auth.guard';
 import { Home } from '../app/shared/components/home/home';
 import { AnalyticsLayout } from './features/analytics/analyticslayout/analytics-layout/analytics-layout';
+import { RoleGuard } from './core/auth/guards/role.guard';
 
 export const routes: Routes = [
     {
@@ -50,7 +51,10 @@ export const routes: Routes = [
                 path: 'upload/admin/analytics',
                 loadComponent: () => 
                     import("./features/analytics/analyticslayout/admin-analytics/admin-analytics")
-                    .then(m => m.AdminAnalytics)
+                    .then(m => m.AdminAnalytics),
+                    canActivate: [RoleGuard],
+                data: {role: 'ADMIN'}
+                
             }
         ],
         canActivate: [authGuard]
