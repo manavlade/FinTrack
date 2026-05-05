@@ -1,0 +1,156 @@
+<div class="h-screen flex flex-col bg-gray-50">
+
+    <div class="bg-white border-b px-6 py-4 flex justify-between items-center">
+        <div>
+            <h2 class="text-xl font-semibold text-gray-800">Upload History</h2>
+            <p class="text-sm text-gray-500">All file uploads and processing details</p>
+        </div>
+
+        <button routerLink="/upload"
+            class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">
+            ⬆️ Upload
+        </button>
+    </div>
+
+    <div class="bg-white border-b px-6 py-3 flex items-center justify-between text-sm">
+
+        <div class="flex items-center gap-4">
+            <input type="text" placeholder="Search files..." (input)="searchTerm.set($any($event.target).value)"
+                class="border rounded-lg px-3 py-1.5 w-64 focus:ring-2 focus:ring-indigo-200 outline-none" />
+
+            <select (change)="statusFilter.set($any($event.target).value)" class="border rounded-lg px-2 py-1.5">
+
+                <option value="ALL">All Status</option>
+                <option value="SUCCESS">Success</option>
+                <option value="FAILED">Failed</option>
+                <option value="PARTIAL">Partial</option>
+            </select>
+        </div>
+
+        <div class="text-gray-500 text-xs">
+            Total: {{ history().length }} uploads
+        </div>
+
+    </div>
+
+    <div class="flex-1 overflow-hidden">
+
+        @if (!loading() && history().length > 0) {
+
+        <div class="h-full overflow-auto bg-white">
+
+            <table class="w-full text-sm">
+
+                <thead class="sticky top-0 bg-gray-50 border-b text-xs text-gray-600 uppercase">
+                    <tr>
+                        <th class="p-3 text-left">File</th>
+                        <th>Status</th>
+                        <th>Uploaded</th>
+                        <th>Rows</th>
+                        <th>Valid</th>
+                        <th>Invalid</th>
+                        <th>Error %</th>
+                    </tr>
+                </thead>
+
+                <tbody class="divide-y">
+
+                    @for (job of filteredUploadHistory(); track job.id) {
+                    <tr class="hover:bg-gray-50 transition cursor-pointer group">
+
+                        <td class="p-3">
+                            <div class="flex items-center gap-3">
+
+                                <div class="bg-indigo-100 text-indigo-600 p-2 rounded">
+                                    📄
+                                </div>
+
+                                <div class="flex flex-col leading-tight">
+                                    <span class="font-medium text-gray-800 truncate max-w-[220px]">
+                                        {{ job.filename }}
+                                    </span>
+                                    <span class="text-xs text-gray-400">
+                                        ID: {{ job.id }}
+                                    </span>
+                                </div>
+
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="flex items-center gap-2 text-xs font-medium">
+
+                                <span class="w-2 h-2 rounded-full" [ngClass]="{
+                        'bg-green-500': job.status === 'SUCCESS',
+                        'bg-red-500': job.status === 'FAILED',
+                        'bg-yellow-500': job.status === 'PARTIAL'
+                      }">
+                                </span>
+
+                                <span [ngClass]="{
+                      'text-green-600': job.status === 'SUCCESS',
+                      'text-red-600': job.status === 'FAILED',
+                      'text-yellow-600': job.status === 'PARTIAL'
+                    }">
+                                    {{ job.status }}
+                                </span>
+
+                            </div>
+                        </td>
+
+                        <!-- DATE -->
+                        <td class="text-gray-500 text-xs">
+                            {{ job.uploadedAt | date:'short' }}
+                        </td>
+
+                        <!-- TOTAL -->
+                        <td class="font-medium text-gray-700">
+                            {{ job.totalRows }}
+                        </td>
+
+                        <!-- VALID -->
+                        <td class="text-green-600 font-medium">
+                            {{ job.validRows }}
+                        </td>
+
+                        <!-- INVALID -->
+                        <td class="text-red-600 font-medium">
+                            {{ job.invalidRows }}
+                        </td>
+
+                        <!-- ERROR % -->
+                        <td class="text-xs font-medium">
+                            <span class="px-2 py-1 rounded" [ngClass]="{
+                      'bg-green-50 text-green-600': job.invalidRows === 0,
+                      'bg-yellow-50 text-yellow-600': job.invalidRows > 0 && job.invalidRows < job.totalRows,
+                      'bg-red-50 text-red-600': job.invalidRows === job.totalRows
+                    }">
+                                {{ ((job.invalidRows / job.totalRows) * 100) | number:'1.0-0' }}%
+                            </span>
+                        </td>
+
+                    </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+        }
+
+        @if (!loading() && history().length === 0) {
+        <div class="h-full flex flex-col items-center justify-center text-gray-400">
+            <div class="text-5xl mb-2">📊</div>
+            <p>No uploads yet</p>
+        </div>
+        }
+
+        <!-- LOADING -->
+        <div *ngIf="loading()" class="p-6 space-y-3 animate-pulse">
+            <div *ngFor="let i of [1,2,3,4,5,6,7,8]" class="h-10 bg-gray-200 rounded"></div>
+        </div>
+
+    </div>
+
+</div>

@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/auth/guards/auth.guard';
 import { Home } from '../app/shared/components/home/home';
+import { AnalyticsLayout } from './features/analytics/analyticslayout/analytics-layout/analytics-layout';
 
 export const routes: Routes = [
     {
@@ -27,6 +28,31 @@ export const routes: Routes = [
         loadComponent: () =>
             import('./features/upload/upload')
                 .then(m => m.Upload),
+        canActivate: [authGuard]
+    },
+    {
+        path: 'analytics',
+        component: AnalyticsLayout,
+        children: [
+            {
+                path: 'upload/history',
+                loadComponent: () =>
+                    import("./features/analytics/analyticslayout/upload-history/upload-history")
+                        .then(m => m.UploadHistory)
+            },
+            {
+                path: 'upload/analytics',
+                loadComponent: () =>
+                    import("./features/analytics/analyticslayout/uploadanalytics/uploadanalytics")
+                        .then(m => m.Uploadanalytics)
+            },
+            {
+                path: 'upload/admin/analytics',
+                loadComponent: () => 
+                    import("./features/analytics/analyticslayout/admin-analytics/admin-analytics")
+                    .then(m => m.AdminAnalytics)
+            }
+        ],
         canActivate: [authGuard]
     }
 ];

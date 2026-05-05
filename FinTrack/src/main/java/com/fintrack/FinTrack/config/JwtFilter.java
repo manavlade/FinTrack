@@ -45,12 +45,12 @@ public class JwtFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
                 return;
             }
-            email = jJwtUtil.extractEmail(token);
+            
             role = jJwtUtil.extractRole(token).toUpperCase();
             userId = jJwtUtil.extractId(token);
         }
 
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                     userId,

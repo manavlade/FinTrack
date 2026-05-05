@@ -1,0 +1,116 @@
+<div class="min-h-screen bg-gray-50 flex flex-col">
+
+    <!-- HEADER -->
+    <div class="bg-white border-b px-6 py-5 flex justify-between items-center">
+        <div>
+            <h1 class="text-2xl font-semibold text-gray-800">Admin Analytics</h1>
+            <p class="text-sm text-gray-500">System-wide upload performance overview</p>
+        </div>
+
+        <div class="flex gap-2">
+            <input type="date" class="border rounded-lg px-3 py-2 text-sm"
+                (change)="fromDate.set($any($event.target).value)" />
+
+            <input type="date" class="border rounded-lg px-3 py-2 text-sm"
+                (change)="toDate.set($any($event.target).value)" />
+
+            <button (click)="loadAll()"
+                class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">
+                Apply
+            </button>
+        </div>
+    </div>
+
+    <!-- KPI GRID -->
+    <div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+        <!-- TOTAL -->
+        <div class="bg-white rounded-xl shadow-sm border p-5">
+            <p class="text-sm text-gray-500">Total Uploads</p>
+            <h2 class="text-2xl font-bold text-gray-800 mt-1">
+                {{ summary()?.totalUploads ?? 0 }}
+            </h2>
+        </div>
+
+        <!-- SUCCESS -->
+        <div class="bg-green-50 border border-green-100 rounded-xl p-5">
+            <p class="text-sm text-gray-500">Success</p>
+            <h2 class="text-2xl font-bold text-green-600 mt-1">
+                {{ summary()?.success ?? 0 }}
+            </h2>
+        </div>
+
+        <!-- FAILED -->
+        <div class="bg-red-50 border border-red-100 rounded-xl p-5">
+            <p class="text-sm text-gray-500">Failed</p>
+            <h2 class="text-2xl font-bold text-red-600 mt-1">
+                {{ summary()?.failed ?? 0 }}
+            </h2>
+        </div>
+
+        <!-- PARTIAL -->
+        <div class="bg-yellow-50 border border-yellow-100 rounded-xl p-5">
+            <p class="text-sm text-gray-500">Partial</p>
+            <h2 class="text-2xl font-bold text-yellow-600 mt-1">
+                {{ summary()?.partial ?? 0 }}
+            </h2>
+        </div>
+
+    </div>
+
+    <!-- SECOND ROW -->
+    <div class="px-6 grid grid-cols-1 lg:grid-cols-3 gap-4">
+
+        <!-- SUCCESS RATE -->
+        <div class="bg-white border rounded-xl p-5 shadow-sm">
+            <p class="text-sm text-gray-500">Success Rate</p>
+
+            <div class="mt-3 flex items-end gap-2">
+                <h2 class="text-3xl font-bold text-indigo-600">
+                    {{ successRate() | number:'1.0-0' }}%
+                </h2>
+            </div>
+
+            <div class="mt-3 w-full bg-gray-100 rounded-full h-2">
+                <div class="bg-indigo-600 h-2 rounded-full" [style.width.%]="successRate()"></div>
+            </div>
+        </div>
+
+        <!-- TOTAL ROWS -->
+        <div class="bg-white border rounded-xl p-5 shadow-sm">
+            <p class="text-sm text-gray-500">Total Rows Processed</p>
+            <h2 class="text-2xl font-bold text-gray-800 mt-2">
+                {{ summary()?.totalRows ?? 0 }}
+            </h2>
+
+            <p class="text-xs text-gray-400 mt-1">
+                Across all uploads
+            </p>
+        </div>
+
+        <!-- VALID / INVALID -->
+        <div class="bg-white border rounded-xl p-5 shadow-sm">
+            <p class="text-sm text-gray-500">Data Quality</p>
+
+            <div class="flex justify-between mt-3 text-sm">
+                <span class="text-green-600 font-semibold">
+                    Valid: {{ summary()?.validRows ?? 0 }}
+                </span>
+
+                <span class="text-red-600 font-semibold">
+                    Invalid: {{ summary()?.invalidRows ?? 0 }}
+                </span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- LOADING -->
+    <div *ngIf="!summary()" class="p-6 grid grid-cols-4 gap-4 animate-pulse">
+        <div class="h-24 bg-gray-200 rounded-xl"></div>
+        <div class="h-24 bg-gray-200 rounded-xl"></div>
+        <div class="h-24 bg-gray-200 rounded-xl"></div>
+        <div class="h-24 bg-gray-200 rounded-xl"></div>
+    </div>
+
+</div>
